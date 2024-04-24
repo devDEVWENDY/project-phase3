@@ -1,7 +1,10 @@
-// import express from 'express';
-// import path from 'path';
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import path from 'path';
+
+// NOTE Could NOT use require due to error listed below
+// ReferenceError: require is not defined in ES module scope, you can use import instead This file is being treated as an ES module because it has a '.js' file extension and '/Users/wrmdocs/Documents/liberty/projects/phase3/project-phase3/package.json' contains "type": "module". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.
+// const express = require('express');
+// const path = require('path');
 
 // creates an express app object
 const app = express();
