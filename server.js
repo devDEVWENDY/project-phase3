@@ -28,8 +28,13 @@ app.listen(PORT, '127.0.0.1', () => {
 
 // GET customers
 app.get("/customers", async (req, res) => {
-    const cust = await da.getCustomers();   // call to get customers
-    res.send(cust);    
+    const [cust, err] = await da.getCustomers();   // call to get customers
+    if(cust){
+        res.send(cust);
+    }else{
+        res.status(500);
+        res.send(err);
+    }       
 });
 
 
