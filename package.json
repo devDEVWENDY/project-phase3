@@ -2,7 +2,6 @@
   "name": "project-phase3",
   "version": "1.0.0",
   "description": "Node.js & MongoDB Customers",
-  "type": "module",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
