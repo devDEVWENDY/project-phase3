@@ -23,6 +23,7 @@ async function getCustomers() {
     // return await collection.find().toArray();    // orig without error handling
     try {
         const customers = await collection.find().toArray();
+        // throw {"message":"an error occured"};    // simulates an error
         return [customers, null];
     } catch (err) {
         console.log(err.message);
