@@ -28,7 +28,7 @@ app.listen(PORT, '127.0.0.1', () => {
 
 // GET customers
 app.get("/customers", async (req, res) => {
-    const [cust, err] = await da.getCustomers();   // call to get customers
+    const [cust, err] = await da.getCustomers();   // call to get all customers
     if(cust){
         res.send(cust);
     }else{
@@ -36,5 +36,21 @@ app.get("/customers", async (req, res) => {
         res.send(err);
     }       
 });
+
+
+// GET reset customers
+app.get("/reset", async (req, res) => {
+    const [result, err] = await da.resetCustomers();   // call to reset to 3 customers
+    if(result){
+        res.send(result);
+    }else{
+        res.status(500);
+        res.send(err);
+    }     
+});
+
+
+
+
 
 
