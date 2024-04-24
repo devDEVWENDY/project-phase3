@@ -20,7 +20,14 @@ async function dbStartup() {
 }
 
 async function getCustomers() {
-    return await collection.find().toArray();
+    // return await collection.find().toArray();    // orig without error handling
+    try {
+        const customers = await collection.find().toArray();
+        return [customers, null];
+    } catch (err) {
+        console.log(err.message);
+        return [null, err.message];
+    }
 }
 
 dbStartup();
