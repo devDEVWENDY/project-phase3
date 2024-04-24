@@ -1,5 +1,6 @@
 // import mongodb 
-import mongodb from 'mongodb';
+// import mongodb from 'mongodb';
+const mongodb = require("mongodb");
 
 // access the mongodb client
 const MongoClient = mongodb.MongoClient;        
