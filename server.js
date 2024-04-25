@@ -62,8 +62,8 @@ app.get("/reset", async (req, res) => {
 // POST add a new customer
 app.post('/customers', async (req, res) => {
     const newCustomer = await req.body;
-    console.log(newCustomer);
-    // if (newCustomer === null || req.body != {}) {
+    // console.log(newCustomer);
+    // if (newCustomer == null || req.body != {}) {
     //     res.status(400);
     //     res.send("missing request body");
     // } else {
