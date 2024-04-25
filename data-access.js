@@ -68,5 +68,5 @@ async function addCustomer(newCustomer) {
 
 
 dbStartup();
-module.exports = { getCustomers, resetCustomers };
+module.exports = { getCustomers, resetCustomers, addCustomer };
 
