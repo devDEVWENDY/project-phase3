@@ -49,6 +49,21 @@ async function resetCustomers() {
 
 }
 
+async function addCustomer(newCustomer) {
+    try {
+        const insertResult = await collection.insertOne(newCustomer);
+        // return array [status, id, errMessage]
+        return ["success", insertResult.insertedId, null];
+    } catch (err) {
+        console.log(err.message);
+        return ["fail", null, err.message];
+    }
+
+}
+
+
+
+
 
 
 
