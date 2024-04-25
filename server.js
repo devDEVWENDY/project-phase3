@@ -7,12 +7,16 @@
 const express = require('express');
 const path = require('path');
 const da = require("./data-access");
+const bodyParser = require('body-parser');
 
 // creates an express app object
 const app = express();
 
 // sets the port to 4000
 const PORT = 4000;
+
+// read the request body that's the received data from the incoming request body 
+app.use(bodyParser.json());
 
 // calls app.use() to implement a static file server
 // have static files served from the "public" directory
