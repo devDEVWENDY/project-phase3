@@ -26,8 +26,13 @@ app.use(express.static('public'))
 
 // use app.listen(...) to start the server
 app.listen(PORT, '127.0.0.1', () => {
-    console.log(`Server running at http://127.0.0.1:{PORT}/`);
+    console.log(`Server running at http://127.0.0.1:${PORT}/`);
 });
+
+// app.listen(PORT, () => {
+//     console.log(`Server listening on port ${PORT}`);
+//     // console.log("staticDir: " + staticDir);
+//   });
 
 
 // GET customers
@@ -56,11 +61,12 @@ app.get("/reset", async (req, res) => {
 
 // POST add a new customer
 app.post('/customers', async (req, res) => {
-    const newCustomer = req.body;
-    if (newCustomer === null || req.body != {}) {
-        res.status(400);
-        res.send("missing request body");
-    } else {
+    const newCustomer = await req.body;
+    console.log(newCustomer);
+    // if (newCustomer === null || req.body != {}) {
+    //     res.status(400);
+    //     res.send("missing request body");
+    // } else {
         // return array format [status, id, errMessage]
         const [status, id, errMessage] = await da.addCustomer(newCustomer);
         if (status === "success") {
@@ -72,7 +78,7 @@ app.post('/customers', async (req, res) => {
             res.status(400);
             res.send(errMessage);
         }
-    }
+    // }
 });
 
 
