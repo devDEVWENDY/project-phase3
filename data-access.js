@@ -23,7 +23,7 @@ async function getCustomers() {
     // return await collection.find().toArray();    // orig without error handling
     try {
         const customers = await collection.find().toArray();
-        // throw {"message":"an error occured"};    // simulates an error
+        // throw {"message":"an error occured"};    // simulates an error or forces an error
         return [customers, null];
     } catch (err) {
         console.log(err.message);
@@ -94,6 +94,23 @@ async function updateCustomer(updatedCustomer) {
 }
 
 
+// DELETE a customer
+async function deleteCustomerById(id) {
+    try {
+        const deleteResult = await collection.deleteOne({ "id": +id });
+        if (deleteResult.deletedCount === 0) {
+            // return array [message, errMessage]
+            return [null, "no record deleted"];
+        } else if (deleteResult.deletedCount === 1) {
+            return ["one record deleted", null];
+        } else {
+            return [null, "error deleting records"]
+        }
+    } catch (err) {
+        console.log(err.message);
+        return [null, err.message];
+    }
+}
 
 
 
@@ -103,5 +120,5 @@ async function updateCustomer(updatedCustomer) {
 
 
 dbStartup();
-module.exports = { getCustomers, resetCustomers, addCustomer, getCustomerById, updateCustomer };
+module.exports = { getCustomers, resetCustomers, addCustomer, getCustomerById, updateCustomer, deleteCustomerById };
 

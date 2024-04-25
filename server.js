@@ -62,13 +62,11 @@ app.get("/reset", async (req, res) => {
 // POST add a new customer
 app.post('/customers', async (req, res) => {
     const newCustomer = await req.body;
-    // console.log(newCustomer);
-    // if (newCustomer == null || req.body != {}) {
-    //     res.status(400);
-    //     res.send("missing request body");
-    // } else {
+
+    if (newCustomer != null || req.body == {}) {
         // return array format [status, id, errMessage]
         const [status, id, errMessage] = await da.addCustomer(newCustomer);
+        // throw {"message":"an error occured"};    // testing by forcing error
         if (status === "success") {
             res.status(201);
             let response = { ...newCustomer };
@@ -78,7 +76,11 @@ app.post('/customers', async (req, res) => {
             res.status(400);
             res.send(errMessage);
         }
-    // }
+        
+    } else {
+        res.status(400);
+        res.send("missing request body");
+    }
 });
 
 
@@ -100,10 +102,9 @@ app.get("/customers/:id", async (req, res) => {
 app.put('/customers/:id', async (req, res) => {
     const id = await req.params.id;
     const updatedCustomer = await req.body;
-    // if (updatedCustomer === null || req.body != {}) {
-    //     res.status(400);
-    //     res.send("missing request body");
-    // } else {
+    
+    if (updatedCustomer != null || req.body == {}) {
+
         delete updatedCustomer._id;
         // return array format [message, errMessage]
         const [message, errMessage] = await da.updateCustomer(updatedCustomer);
@@ -113,7 +114,12 @@ app.put('/customers/:id', async (req, res) => {
             res.status(400);
             res.send(errMessage);
         }
-    // }
+
+       
+    } else {
+        res.status(400);
+        res.send("missing request body");
+    }
 });
 
 
