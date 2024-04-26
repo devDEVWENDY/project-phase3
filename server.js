@@ -72,7 +72,7 @@ app.post('/customers', async (req, res) => {
     // console.log(newCustomer);
     if (newCustomer.id === undefined || customerIds.includes(newCustomer.id)) {
         res.status(400);
-        res.send("please provide unique id");
+        res.send("provide unique id in the request body");
     } else {
         // return array format [status, id, errMessage]
         const [status, id, errMessage] = await da.addCustomer(newCustomer);
@@ -112,10 +112,11 @@ app.put('/customers/:id', async (req, res) => {
     const updatedCustomer = await req.body;
 
 
- // if (updatedCustomer === null || req.body != {}) {
-    //     res.status(400);
-    //     res.send("missing request body");
-    // } else {
+    if (updatedCustomer.id === undefined) {
+        // if (updatedCustomer === null || req.body != {}) {
+            res.status(400);
+        res.send("provide a valid customer id value in the request body");
+    } else {
         delete updatedCustomer._id;
         // return array format [message, errMessage]
         const [message, errMessage] = await da.updateCustomer(updatedCustomer);
@@ -125,7 +126,7 @@ app.put('/customers/:id', async (req, res) => {
             res.status(400);
             res.send(errMessage);
         }
-    // }
+    }
 
 });
 
