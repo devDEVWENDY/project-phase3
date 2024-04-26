@@ -64,12 +64,15 @@ app.get("/reset", async (req, res) => {
 // POST add a new customer
 app.post('/customers', async (req, res) => {
     const newCustomer = await req.body;
-    console.log(newCustomer.id);
+    // console.log(newCustomer.id);
+    const customers = await da.getCustomers();
+    const customerIds = customers[0].map(a => a.id)
+    console.log(customerIds);
 
     // console.log(newCustomer);
-    if (newCustomer.id === undefined) {
+    if (newCustomer.id === undefined || customerIds.includes(newCustomer.id)) {
         res.status(400);
-        res.send("missing request body");
+        res.send("please provide unique id");
     } else {
         // return array format [status, id, errMessage]
         const [status, id, errMessage] = await da.addCustomer(newCustomer);
@@ -84,6 +87,7 @@ app.post('/customers', async (req, res) => {
         }
     }
 });
+
 
 
 
