@@ -22,7 +22,8 @@ app.use(bodyParser.json());
 // have static files served from the "public" directory
     // RESOURCE: https://expressjs.com/en/starter/static-files.html
     //  use the following code to serve images, CSS files, and JavaScript files in a directory named public:
-app.use(express.static('public'))
+// app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, 'public')));
 
 // use app.listen(...) to start the server
 app.listen(PORT, '127.0.0.1', () => {
@@ -60,13 +61,18 @@ app.get("/reset", async (req, res) => {
 
 
 // POST add a new customer
+// POST add a new customer
 app.post('/customers', async (req, res) => {
     const newCustomer = await req.body;
+    console.log(newCustomer.id);
 
-    if (newCustomer != null || req.body == {}) {
+    // console.log(newCustomer);
+    if (newCustomer.id === undefined) {
+        res.status(400);
+        res.send("missing request body");
+    } else {
         // return array format [status, id, errMessage]
         const [status, id, errMessage] = await da.addCustomer(newCustomer);
-        // throw {"message":"an error occured"};    // testing by forcing error
         if (status === "success") {
             res.status(201);
             let response = { ...newCustomer };
@@ -76,12 +82,9 @@ app.post('/customers', async (req, res) => {
             res.status(400);
             res.send(errMessage);
         }
-        
-    } else {
-        res.status(400);
-        res.send("missing request body");
     }
 });
+
 
 
 // GET customer by id
@@ -99,12 +102,16 @@ app.get("/customers/:id", async (req, res) => {
 
 
 // PUT edit/update a customer's data
+// PUT edit/update a customer's data
 app.put('/customers/:id', async (req, res) => {
     const id = await req.params.id;
     const updatedCustomer = await req.body;
-    
-    if (updatedCustomer != null || req.body == {}) {
 
+
+ // if (updatedCustomer === null || req.body != {}) {
+    //     res.status(400);
+    //     res.send("missing request body");
+    // } else {
         delete updatedCustomer._id;
         // return array format [message, errMessage]
         const [message, errMessage] = await da.updateCustomer(updatedCustomer);
@@ -114,12 +121,8 @@ app.put('/customers/:id', async (req, res) => {
             res.status(400);
             res.send(errMessage);
         }
+    // }
 
-       
-    } else {
-        res.status(400);
-        res.send("missing request body");
-    }
 });
 
 
