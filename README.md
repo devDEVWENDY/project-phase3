@@ -25,7 +25,8 @@ How to use Postman
 - enter the url endpoint you are testing
 - if the request has Body data, enter the data in the appropriate fields (ex. Body, raw, JSON, etc )
 - if the request uses an api key, use the key & value in Header or Authorization: 
-    - key & value:    x-api-key      api-key
+    - key & value:      x-api-key      api-key
+    - api-key value:    phase3key
 - click Send and check results in Response
 
 
