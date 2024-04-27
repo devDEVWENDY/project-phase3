@@ -9,11 +9,22 @@ const path = require('path');
 const da = require("./data-access");
 const bodyParser = require('body-parser');
 
+// enable .env
+const dotenv = require('dotenv');
+dotenv.config();
+
 // creates an express app object
 const app = express();
 
 // sets the port to 4000
 const PORT = 4000;
+
+// environment variables access values in .env
+const port = process.env.PORT;
+const api_key = process.env.API_KEY;
+const mongodb_url = process.env.MONGO_URL;
+
+
 
 // read the request body that's the received data from the incoming request body 
 app.use(bodyParser.json());
@@ -36,8 +47,30 @@ app.listen(PORT, '127.0.0.1', () => {
 //   });
 
 
+// API key handler
+function apiKeyAuth (req, res, next) {
+    const apiKeyHeader = req.headers['x-api-key']; // Assuming the API key is sent in the header named 'x-api-key'
+  
+    // Check if API key is present
+    if (!apiKeyHeader) {
+        // if (!req.header("x-api-key")) {
+            res.status(401)
+        return res.json({ message: 'Invalid API key' });
+    } else {
+        if (apiKeyHeader === api_key){
+            keyValid = true;
+        }
+
+    }
+
+    // // If valid key, continue processing the request
+    next();
+  }
+
+
+
 // GET customers
-app.get("/customers", async (req, res) => {
+app.get("/customers", apiKeyAuth, async (req, res) => {
     const [cust, err] = await da.getCustomers();   // call to get all customers
     if(cust){
         res.send(cust);
@@ -144,5 +177,11 @@ app.delete("/customers/:id", async (req, res) => {
         res.send(errMessage);
     }
 });
+
+
+
+console.log("api key:", api_key);
+console.log("mongodb url:", mongodb_url);
+
 
 
