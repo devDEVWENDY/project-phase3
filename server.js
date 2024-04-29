@@ -2,7 +2,7 @@
 // import path from 'path';
 // const da = require("./data-access");
 
-// NOTE Could NOT use require due to error listed below
+// NOTE Could NOT use require due to error listed below but switched back to require after removing module type from package.json
 // ReferenceError: require is not defined in ES module scope, you can use import instead This file is being treated as an ES module because it has a '.js' file extension and '/Users/wrmdocs/Documents/liberty/projects/phase3/project-phase3/package.json' contains "type": "module". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.
 const express = require('express');
 const path = require('path');
@@ -51,6 +51,7 @@ app.listen(PORT, '127.0.0.1', () => {
 function apiKeyAuth (req, res, next) {
     const apiKeyHeader = req.headers['x-api-key']; // Assuming the API key is sent in the header named 'x-api-key'
   
+
     // Check if API key is present
     if (!apiKeyHeader) {
         // if (!req.header("x-api-key")) {
@@ -82,7 +83,7 @@ app.get("/customers", apiKeyAuth, async (req, res) => {
 
 
 // GET reset customers
-app.get("/reset", async (req, res) => {
+app.get("/reset", apiKeyAuth, async (req, res) => {
     const [result, err] = await da.resetCustomers();   // call to reset to 3 customers
     if(result){
         res.send(result);
@@ -95,7 +96,7 @@ app.get("/reset", async (req, res) => {
 
 // POST add a new customer
 // POST add a new customer
-app.post('/customers', async (req, res) => {
+app.post('/customers', apiKeyAuth, async (req, res) => {
     const newCustomer = await req.body;
     // console.log(newCustomer.id);
     const customers = await da.getCustomers();
@@ -125,7 +126,7 @@ app.post('/customers', async (req, res) => {
 
 
 // GET customer by id
-app.get("/customers/:id", async (req, res) => {
+app.get("/customers/:id", apiKeyAuth, async (req, res) => {
     const id = req.params.id;
     // return array [customer, errMessage]
     const [cust, err] = await da.getCustomerById(id);
@@ -140,7 +141,7 @@ app.get("/customers/:id", async (req, res) => {
 
 // PUT edit/update a customer's data
 // PUT edit/update a customer's data
-app.put('/customers/:id', async (req, res) => {
+app.put('/customers/:id', apiKeyAuth, async (req, res) => {
     const id = await req.params.id;
     const updatedCustomer = await req.body;
 
@@ -166,7 +167,7 @@ app.put('/customers/:id', async (req, res) => {
 
 
 // DELETE a customer
-app.delete("/customers/:id", async (req, res) => {
+app.delete("/customers/:id", apiKeyAuth, async (req, res) => {
     const id = req.params.id;
     // return array [message, errMessage]
     const [message, errMessage] = await da.deleteCustomerById(id);
